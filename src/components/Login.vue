@@ -33,8 +33,8 @@ export default {
     return {
       // 这是登录表单的数据绑定对象
       loginForm: {
-        username: 'zhangsan',
-        password: '123'
+        username: 'admin',
+        password: '123456'
       },
       // 这是登录表单的验证规则对象
       loginFormRules: {
@@ -56,11 +56,17 @@ export default {
       this.$refs.loginFormRef.resetFields()
     },
     login () {
-      this.$refs.loginFormRef.validate(valid => {
-        // console.log(valid)
-        if (!valid) return
-        this.$http.post('login', this.loginForm)
-      })
+      this.$refs.loginFormRef.validate(
+        async valid => {
+          // console.log(valid)
+          if (!valid) return
+          const { data: res } = await this.$http.post('login', this.loginForm)
+          // console.log(result)
+          // console.log(result.data)
+          // console.log(res)
+          if (res.meta.status !== 200) return this.$message.error('登陆失败')
+          return this.$message.success('登陆成功')
+        })
     }
   }
 }
