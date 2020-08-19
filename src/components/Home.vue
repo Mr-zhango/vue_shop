@@ -15,20 +15,20 @@
       <el-aside width="200px">
         <el-menu background-color="#333744" text-color="#fff" active-text-color="#ffd04b">
           <!-- 一级菜单 -->
-          <el-submenu index="1">
+          <el-submenu :index="item.id.toString()" v-for="item in menuList" :key="item.id">
             <!-- 一级菜单的模板区域 -->
             <template slot="title">
               <!-- 图标 -->
               <i class="el-icon-location"></i>
               <!-- 文本 -->
-              <span>导航一</span>
+              <span>{{item.authName}}</span>
             </template>
-            <el-menu-item index="1-4-1">
+            <el-menu-item :index="subItem.id.toString()" v-for="subItem in item.children" :key="subItem.id">
               <template slot="title">
                 <!-- 图标 -->
                 <i class="el-icon-location"></i>
                 <!-- 文本 -->
-                <span>导航一</span>
+                <span>{{subItem.authName}}</span>
               </template>
             </el-menu-item>
           </el-submenu>
@@ -42,11 +42,26 @@
 
 <script>
 export default {
+  data () {
+    return {
+      menuList: []
+    }
+  },
+  created () {
+    this.getMenuList()
+  },
   methods: {
     logout () {
       // 清空回话信息
       window.sessionStorage.clear()
       this.$router.push('/login')
+    },
+    // 获取左侧菜单
+    async getMenuList () {
+      const { data: res } = await this.$http.get('menus')
+      if (res.meta.status !== 200) return this.$message.error(res.meta.msg)
+      this.menuList = res.data
+      console.log(res)
     }
   }
 }
