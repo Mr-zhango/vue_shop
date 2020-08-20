@@ -12,12 +12,12 @@
       <!-- 搜索与添加区域 -->
       <el-row :gutter="20">
         <el-col :span="7">
-          <el-input placeholder="请输入内容" class="input-with-select">
-            <el-button slot="append" icon="el-icon-search"></el-button>
+          <el-input placeholder="请输入内容" v-model="queryInfo.query" :clearable="true" @clear="getUserList">
+            <el-button slot="append" icon="el-icon-search" @click="getUserList"></el-button>
           </el-input>
         </el-col>
         <el-col :span="4">
-          <el-button type="primary">添加用户</el-button>
+          <el-button type="primary" @click="addDialogVisible = true">添加用户</el-button>
         </el-col>
       </el-row>
       <!-- 用户列表区域 -->
@@ -31,7 +31,7 @@
           <!-- 使用作用域插槽 来渲染开关  作用域插槽会覆盖prop属性-->
           <template slot-scope="scope">
            <!-- {{scope.row}}-->
-            <el-switch v-model="scope.row.mg_state"></el-switch>
+            <el-switch v-model="scope.row.mg_state" @change="userStateChange(scope.row)"></el-switch>
           </template>
         </el-table-column>>
         <el-table-column label="操作" width="180px">
@@ -57,6 +57,16 @@
           :total="total">
         </el-pagination>
     </el-card>
+    <!-- 添加用户的对话框 -->
+    <el-dialog title="提示" :visible.sync="addDialogVisible" width="50%">
+      <!-- 内容主体区域 -->
+      <span>内容主体区域</span>
+      <!-- 底部区域 -->
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="addDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="addDialogVisible = false">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -66,6 +76,7 @@ export default {
     return {
       // 获取用户列表的参数对象
       queryInfo: {
+        // 搜索关键字
         query: '',
         // 当前页数
         pagenum: 1,
@@ -73,7 +84,9 @@ export default {
         pagesize: 2
       },
       userList: [],
-      total: 0
+      total: 0,
+      // 控制添加用户对话框的显示与隐藏
+      addDialogVisible: false
     }
   },
   created () {
@@ -100,6 +113,17 @@ export default {
       console.log(newPage)
       this.queryInfo.pagenum = newPage
       this.getUserList()
+    },
+    // 监听switch开关的状态
+    async userStateChange (userInfo) {
+      console.log(userInfo)
+      const { data: res } = await this.$http.put(`users/${userInfo.id}/state/${userInfo.mg_state}`)
+      if (res.meta.status !== 200) {
+        // 修改失败之后页面显示成之前的状态
+        userInfo.mg_state = !userInfo.mg_state
+        return this.$message.error('更新用户状态失败')
+      }
+      this.$message.success('更新用户状态成功')
     }
   }
 }
