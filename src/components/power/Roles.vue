@@ -204,7 +204,9 @@ export default {
       if (!node.children) {
         return arr.push(node.id)
       }
-      node.children.forEach(item => this.getLeafkeys(item, arr))
+      node.children.forEach(
+        item => this.getLeafkeys(item, arr)
+      )
     },
     // 权限对话框关闭事件
     setRightDialogClosed () {
@@ -286,7 +288,9 @@ export default {
       const { data: res } = await this.$http.post(`roles/${this.roleId}/rights`, { rids: idStr })
       if (res.meta.status !== 200) { return this.$message.error('分配权限失败！') }
       this.$message.success('分配权限成功!')
+      // 刷新列表
       this.getRolesList()
+      // 隐藏对话框
       this.setRightDialogVisible = false
     }
   }
