@@ -43,7 +43,7 @@
             <!-- 嵌套了中文提示 -->
             <el-tooltip effect="dark" content="分配角色" placement="top" :enterable="false">
               <!-- 分配角色按钮 -->
-              <el-button type="warning" size="mini" icon="el-icon-setting"></el-button>
+              <el-button type="warning" size="mini" icon="el-icon-setting" @click="setRole(scope.row)"/>
             </el-tooltip>
           </template>
         </el-table-column>>
@@ -99,6 +99,18 @@
         <el-button @click="editDialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="editUserInfo">确 定</el-button>
      </span>
+    </el-dialog>
+    <!-- 分配角色对话框 -->
+    <el-dialog
+      title="提示" :visible.sync="setRoleDialogVisible" width="50%">
+      <div>
+        <p>当前用户:{{userInfo.username}}</p>
+        <p>当前角色:{{userInfo.password}}</p>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="setRoleDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="setRoleDialogVisible = false">确 定</el-button>
+      </span>
     </el-dialog>
   </div>
 </template>
@@ -180,7 +192,11 @@ export default {
       // 控制修改用户对话框的显示与隐藏
       editDialogVisible: false,
       // 修改之前查询到的用户信息保存
-      editFrom: {}
+      editFrom: {},
+      // 控制分配角色对话框的显示与隐藏
+      setRoleDialogVisible: false,
+      // 被分配权限的用户信息
+      userInfo: {}
     }
   },
   created () {
@@ -301,6 +317,11 @@ export default {
         this.getUserList()
         this.$message.success('删除用户成功')
       })
+    },
+    // 展示分配角色的对话框
+    setRole (userInfo) {
+      this.userInfo = userInfo
+      this.setRoleDialogVisible = true
     }
   }
 }
