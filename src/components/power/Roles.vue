@@ -177,9 +177,10 @@ export default {
       if (res.meta.status !== 200) {
         return this.$message.error('删除权限失败！')
       }
-      this.rolesList = res.data
+      // this.rolesList = res.data
+      role.children = res.data
       //   不建议使用
-      this.getRolesList()
+      // this.getRolesList()
     },
     // 分配权限
     async showSetRightDialog (role) {
