@@ -7,6 +7,7 @@ import './assets/css/global.css'
 import './assets/fonts/iconfont.css'
 // axios
 import axios from 'axios'
+// TreeTable
 import TreeTable from 'vue-table-with-tree-grid'
 
 Vue.config.productionTip = false
