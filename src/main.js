@@ -5,6 +5,14 @@ import './plugins/element.js'
 import './assets/css/global.css'
 // 导入字体图标
 import './assets/fonts/iconfont.css'
+
+// quill 富文本编辑器
+import VueQuillEditor from 'vue-quill-editor'
+// 一定要引入这三个css，不然文本编辑器会出现不规则黑白几何图形
+// 这三个css可以在main.js中引入，也可以在具体使用的.vue文件中引入
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
 // axios
 import axios from 'axios'
 // TreeTable
@@ -21,6 +29,8 @@ axios.interceptors.request.use(config => {
   return config
 })
 Vue.prototype.$http = axios
+// 将 quill 富文本编辑器 注册为全局可用的组件
+Vue.use(VueQuillEditor)
 
 Vue.component('tree-table', TreeTable)
 Vue.filter('dateFormat', function (orinignVal) {
