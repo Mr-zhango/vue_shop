@@ -223,25 +223,25 @@ export default {
       if (res.meta.status !== 200) {
         return this.$message.error('获取用户列表失败!')
       }
-      console.log(res)
+      // console.log(res)
       this.userList = res.data.users
       this.total = res.data.total
     },
     // 监听 pagesize 改变的事件
     handleSizeChange (newSize) {
-      console.log(newSize)
+      // console.log(newSize)
       this.queryInfo.pagesize = newSize
       this.getUserList()
     },
     // 监听 页码 改变的事件
     handleCurrentChange (newPage) {
-      console.log(newPage)
+      // console.log(newPage)
       this.queryInfo.pagenum = newPage
       this.getUserList()
     },
     // 监听switch开关的状态
     async userStateChange (userInfo) {
-      console.log(userInfo)
+      // console.log(userInfo)
       const { data: res } = await this.$http.put(`users/${userInfo.id}/state/${userInfo.mg_state}`)
       if (res.meta.status !== 200) {
         // 修改失败之后页面显示成之前的状态
@@ -261,7 +261,7 @@ export default {
     // 点击按钮添加新用户
     addUser () {
       this.$refs.addFormRef.validate(async validate => {
-        // console.log(validate)
+        // // console.log(validate)
         if (!validate) return
         // 发起添加用户的请求
         const { data: res } = await this.$http.post('users/', this.addForm)

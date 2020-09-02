@@ -17,17 +17,32 @@ import 'quill/dist/quill.bubble.css'
 import axios from 'axios'
 // TreeTable
 import TreeTable from 'vue-table-with-tree-grid'
-
+// NProgress 的 js 和 css
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
 Vue.config.productionTip = false
 
 // 设置axios请求的根路径
 axios.defaults.baseURL = 'http://127.0.0.1:8888/api/private/v1/'
+
+// 在request拦截器中,展示进度条 NProgress.start()
+
+// 基于拦截器实现进度条的展示和隐藏
 axios.interceptors.request.use(config => {
-  console.log(config)
+  NProgress.start()
+  // // console.log(config)
   config.headers.Authorization = window.sessionStorage.getItem('token')
   // 最后必须return config
   return config
 })
+
+// 在response拦截器中,隐藏进度条 NProgress.done()
+
+axios.interceptors.response.use(config => {
+  NProgress.done()
+  return config
+})
+
 Vue.prototype.$http = axios
 // 将 quill 富文本编辑器 注册为全局可用的组件
 Vue.use(VueQuillEditor)

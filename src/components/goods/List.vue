@@ -88,7 +88,7 @@ export default {
       }
       // 请求后台成功
       this.goodsList = res.data.goods
-      //   console.log(this.goodsList)
+      //   // console.log(this.goodsList)
       // 总条数
       this.total = res.data.total
     },

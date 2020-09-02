@@ -192,7 +192,7 @@ export default {
       }
       //   获取权限树
       this.rightsList = res.data
-      //   console.log(res)
+      //   // console.log(res)
       //   递归获取三级节点的id
       this.getLeafkeys(role, this.defKeys)
 
@@ -257,7 +257,7 @@ export default {
     },
     editRoles () {
       this.$refs.editRoleFormRef.validate(async valid => {
-        // console.log(valid)
+        // // console.log(valid)
         // 表单预校验失败
         if (!valid) return
         const { data: res } = await this.$http.put(
